@@ -16,6 +16,17 @@ const isValidSize = (sizeInMegabytes) => {
   return sizeInMegabytes <= 25;
 }
 
+const postFileToManipulate = (evt) => {
+  // Sending file to backend in order
+  // to be read and receive transcription
+  console.log(evt)
+}
+
+const showVisualFeedback = () => {
+  // TODO: Evaluate the event and 
+  // update UI accordingly (either good or bad feedback)
+}
+
 const downloadFile = (evt) => {
   const file = evt.target.files[0]
   const fileSize = file.size
@@ -26,12 +37,12 @@ const downloadFile = (evt) => {
 
   if (isFileValid(fileType) && isValidSize(sizeInMegaBytes)) {
     // Continue with the program
-    console.log({
-      eventFile: multimediaInput.files[0],
-      fileName,
-      fileSize,
-      fileType
-    })
+    const reader = new FileReader()
+
+    reader.readAsArrayBuffer(file)
+
+    reader.onload = postFileToManipulate
+    reader.onerror = showVisualFeedback
   } else {
     throw new Error("Invalid file added. Try again.")
   }
